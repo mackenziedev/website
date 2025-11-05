@@ -1,0 +1,74 @@
+---
+import { siteConfig } from '../config.js';
+---
+
+<div class="relative w-full max-w-md mx-auto h-[400px] perspective-1000">
+  <div class="stacked-cards-container">
+    {siteConfig.socials.map((social, index) => (
+      <div 
+        class="social-card glass absolute inset-0 rounded-3xl p-8 cursor-pointer transition-all duration-500 ease-out"
+        style={`z-index: ${siteConfig.socials.length - index}; transform: translateY(${index * 20}px) rotate(${index * -2}deg);`}
+        data-index={index}
+      >
+        <div class="flex flex-col items-center justify-center h-full text-center">
+          <div class="w-20 h-20 rounded-full gradient-bg flex items-center justify-center mb-6 glow">
+            <i class={`${social.icon} text-4xl`}></i>
+          </div>
+          <h3 class="text-2xl font-display mb-2">{social.name}</h3>
+          <p class="text-secondary text-sm mb-6">Connect with me on {social.name}</p>
+          <a 
+            href={social.url} 
+            target="_blank" 
+            rel="noopener"
+            class="px-6 py-2 bg-white/10 hover:bg-white/20 rounded-full text-sm transition-colors inline-flex items-center gap-2"
+          >
+            <span>Visit Profile</span>
+            <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .stacked-cards-container:hover .social-card {
+    transform: translateY(0) rotate(0deg) !important;
+  }
+
+  .social-card {
+    backdrop-filter: blur(20px);
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(168, 85, 247, 0.1));
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .social-card:hover {
+    transform: translateY(-20px) scale(1.05) !important;
+    z-index: 100 !important;
+    box-shadow: 0 20px 60px rgba(99, 102, 241, 0.3);
+  }
+
+  .stacked-cards-container:hover .social-card:nth-child(1) {
+    transform: translateX(-120px) translateY(-40px) rotate(-8deg) !important;
+  }
+
+  .stacked-cards-container:hover .social-card:nth-child(2) {
+    transform: translateX(-60px) translateY(-20px) rotate(-4deg) !important;
+  }
+
+  .stacked-cards-container:hover .social-card:nth-child(3) {
+    transform: translateX(0) translateY(0) rotate(0deg) !important;
+  }
+
+  .stacked-cards-container:hover .social-card:nth-child(4) {
+    transform: translateX(60px) translateY(-20px) rotate(4deg) !important;
+  }
+
+  .stacked-cards-container:hover .social-card:nth-child(5) {
+    transform: translateX(120px) translateY(-40px) rotate(8deg) !important;
+  }
+</style>

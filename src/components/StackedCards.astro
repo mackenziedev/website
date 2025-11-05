@@ -1,0 +1,71 @@
+import { Card } from "@/components/ui/card"
+---
+interface Card {
+  title: string;
+  description: string;
+  icon: string;
+}
+
+interface Props {
+  cards: Card[];
+}
+
+const { cards } = Astro.props;
+---
+
+<div class="stacked-cards-container relative h-[400px] w-full max-w-md mx-auto">
+  {cards.map((card, index) => (
+    <div 
+      class="stacked-card absolute inset-0 glass rounded-3xl p-8 cursor-pointer transition-all duration-500"
+      data-index={index}
+      style={`z-index: ${cards.length - index}; transform: translateY(${index * 20}px) rotate(${index * 2}deg);`}
+    >
+      <div class="flex items-center gap-4 mb-4">
+        <div class="w-12 h-12 gradient-bg rounded-xl flex items-center justify-center glow">
+          <i class={`${card.icon} text-xl`}></i>
+        </div>
+        <h3 class="text-2xl font-display">{card.title}</h3>
+      </div>
+      <p class="text-text-secondary leading-relaxed">{card.description}</p>
+    </div>
+  ))}
+</div>
+
+<style>
+  .stacked-cards-container:hover .stacked-card {
+    transform: translateY(0) rotate(0deg) !important;
+  }
+
+  .stacked-card:hover {
+    transform: translateY(-20px) scale(1.05) !important;
+    z-index: 100 !important;
+  }
+
+  .stacked-card {
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.querySelector('.stacked-cards-container');
+    const cards = document.querySelectorAll('.stacked-card');
+    
+    cards.forEach((card, index) => {
+      card.addEventListener('mouseenter', () => {
+        cards.forEach((c, i) => {
+          if (i !== index) {
+            const offset = i < index ? -30 : 30;
+            (c as HTMLElement).style.transform = `translateX(${offset}px) rotate(${offset / 10}deg)`;
+          }
+        });
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        cards.forEach((c, i) => {
+          (c as HTMLElement).style.transform = `translateY(${i * 20}px) rotate(${i * 2}deg)`;
+        });
+      });
+    });
+  });
+</script>

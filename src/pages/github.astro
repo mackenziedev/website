@@ -1,0 +1,58 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import { fetchGitHubRepos } from '../lib/github';
+
+const repos = await fetchGitHubRepos('mackenzie');
+---
+
+<BaseLayout title="GitHub Projects">
+  <Navigation />
+  
+  <main class="pt-32 pb-20">
+    <div class="max-w-6xl mx-auto px-6">
+      <h1 class="text-6xl font-display mb-4">GitHub Projects</h1>
+      <p class="text-secondary text-lg mb-12">
+        My open source contributions and personal projects.
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-6">
+        {repos.map(repo => (
+          <a 
+            href={repo.html_url}
+            target="_blank"
+            rel="noopener"
+            class="bg-surface border border-accent/20 hover:border-accent/40 rounded-2xl p-6 transition-all group"
+          >
+            <div class="flex items-start justify-between mb-4">
+              <h2 class="text-2xl font-display group-hover:text-secondary transition-colors">
+                {repo.name}
+              </h2>
+              <div class="flex items-center gap-1 text-secondary text-sm">
+                <i class="nc-icon-outline ui-2_favourite-31"></i>
+                {repo.stargazers_count}
+              </div>
+            </div>
+            
+            <p class="text-secondary mb-4 leading-relaxed">
+              {repo.description || 'No description available'}
+            </p>
+
+            <div class="flex items-center gap-4">
+              {repo.language && (
+                <span class="px-3 py-1 bg-background rounded-full text-xs text-secondary">
+                  {repo.language}
+                </span>
+              )}
+              {repo.topics.slice(0, 3).map(topic => (
+                <span class="px-3 py-1 bg-background rounded-full text-xs text-secondary">
+                  {topic}
+                </span>
+              ))}
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </main>
+</BaseLayout>

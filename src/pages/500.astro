@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
+---
+
+<BaseLayout title="500 - Server Error" description="Something went wrong on our end.">
+  <Navigation />
+  
+  <main class="min-h-screen flex items-center justify-center px-6">
+    <div class="text-center max-w-2xl">
+      <!-- Animated 500 -->
+      <div class="relative mb-8">
+        <h1 class="text-[200px] font-display leading-none gradient-text animate-pulse-glow">
+          500
+        </h1>
+        <div class="absolute inset-0 blur-3xl opacity-30 gradient-bg"></div>
+      </div>
+      
+      <h2 class="text-4xl font-display mb-4">Server Error</h2>
+      <p class="text-text-secondary text-lg mb-8 leading-relaxed">
+        Something went wrong on our end. Our team has been notified and we're working on fixing it.
+        Please try again later.
+      </p>
+      
+      <div class="flex gap-4 justify-center flex-wrap">
+        <a 
+          href="/" 
+          class="px-8 py-4 gradient-bg rounded-full font-medium hover:scale-105 transition-transform glow-hover inline-flex items-center gap-2"
+        >
+          <i class="fa-solid fa-home"></i>
+          Back to Home
+        </a>
+        <button 
+          onclick="window.location.reload()" 
+          class="px-8 py-4 glass glass-hover rounded-full font-medium hover:scale-105 transition-transform inline-flex items-center gap-2"
+        >
+          <i class="fa-solid fa-rotate-right"></i>
+          Try Again
+        </button>
+      </div>
+      
+      <!-- Error animation -->
+      <div class="mt-16 relative h-32">
+        <div class="absolute inset-0 flex items-center justify-center">
+          <div class="w-32 h-32 border-4 border-primary/20 border-t-primary rounded-full animate-spin"></div>
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center">
+          <i class="fa-solid fa-exclamation-triangle text-5xl text-warning animate-pulse"></i>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

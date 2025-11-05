@@ -1,0 +1,79 @@
+---
+import { siteConfig } from '../config.js';
+---
+
+<section id="skills" class="py-32 relative overflow-hidden">
+  <!-- Background decoration -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-1/4 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-3xl"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-6 relative z-10">
+    <div class="text-center mb-16">
+      <p class="text-text-secondary text-sm mb-4 font-medium tracking-wider">... /Skills ...</p>
+      <h2 class="text-5xl lg:text-6xl font-display mb-6 gradient-text">Technical Expertise</h2>
+      <p class="text-text-secondary text-lg max-w-2xl mx-auto">
+        Technologies and tools I use to bring ideas to life
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      {siteConfig.skills.map((skillGroup, groupIndex) => (
+        <div class="glass rounded-2xl p-8 glass-hover group" style={`animation-delay: ${groupIndex * 0.1}s;`}>
+          <h3 class="text-2xl font-display mb-6 gradient-text-blue">{skillGroup.category}</h3>
+          <div class="space-y-6">
+            {skillGroup.items.map((skill, skillIndex) => (
+              <div class="skill-item" style={`animation-delay: ${(groupIndex * 0.1) + (skillIndex * 0.05)}s;`}>
+                <div class="flex items-center justify-between mb-2">
+                  <div class="flex items-center gap-3">
+                    <i class={`${skill.icon} text-xl text-primary`}></i>
+                    <span class="font-medium">{skill.name}</span>
+                  </div>
+                  <span class="text-sm text-text-secondary">{skill.level}%</span>
+                </div>
+                <div class="h-2 bg-surface rounded-full overflow-hidden">
+                  <div 
+                    class="h-full gradient-bg skill-bar"
+                    style={`width: ${skill.level}%;`}
+                  ></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .skill-bar {
+    animation: fillBar 1.5s ease-out forwards;
+    transform-origin: left;
+  }
+
+  @keyframes fillBar {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+
+  .skill-item {
+    opacity: 0;
+    animation: fadeInUp 0.6s ease-out forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>

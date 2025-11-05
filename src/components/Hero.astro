@@ -1,0 +1,81 @@
+---
+import { siteConfig } from '../config.js';
+---
+
+<section id="about" class="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
+  <!-- Added animated gradient background -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute top-0 left-1/4 w-96 h-96 bg-primary/20 rounded-full blur-3xl animate-pulse-glow"></div>
+    <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/20 rounded-full blur-3xl animate-pulse-glow" style="animation-delay: 1s;"></div>
+    <div class="absolute top-1/2 left-1/2 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-pulse-glow" style="animation-delay: 2s;"></div>
+  </div>
+
+  <!-- Added decorative animated circles -->
+  <div class="absolute top-20 right-20 w-96 h-96 border border-primary/30 rounded-full animate-spin" style="animation-duration: 20s;"></div>
+  <div class="absolute bottom-20 left-20 w-[600px] h-[600px] border border-secondary/20 rounded-full animate-spin" style="animation-duration: 30s; animation-direction: reverse;"></div>
+
+  <div class="max-w-7xl mx-auto px-6 py-20 relative z-10">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <div class="mb-8">
+          <p class="text-text-secondary text-sm mb-4 font-medium tracking-wider flex items-center gap-2">
+            <span class="w-12 h-px bg-gradient-to-r from-primary to-secondary"></span>
+            ... /About project ...
+          </p>
+          <!-- Added gradient text effect to title -->
+          <h1 class="text-7xl lg:text-8xl font-display mb-6 leading-none tracking-tight">
+            <span class="gradient-text animate-gradient">
+              {siteConfig.title.split(' ')[0]}
+            </span>
+            <br/>
+            <span class="gradient-text animate-gradient" style="animation-delay: 0.5s;">
+              {siteConfig.title.split(' ').slice(1).join(' ')}
+            </span>
+          </h1>
+          <p class="text-text-secondary text-lg leading-relaxed max-w-xl">
+            {siteConfig.bio}
+          </p>
+        </div>
+
+        <!-- Enhanced social links with glassmorphism -->
+        <div class="flex flex-wrap gap-4 mb-8">
+          {siteConfig.socials.map((social) => (
+            <a 
+              href={social.url} 
+              target="_blank" 
+              rel="noopener" 
+              class="flex items-center gap-2 px-4 py-2 glass glass-hover rounded-full text-sm group"
+            >
+              <i class={`${social.icon} text-lg group-hover:text-primary transition-colors`}></i>
+              {social.name}
+            </a>
+          ))}
+        </div>
+
+        <!-- Enhanced CTA button with gradient and glow -->
+        <a href="#projects" class="inline-flex items-center gap-3 px-8 py-4 gradient-bg rounded-full hover:opacity-90 transition-all font-medium group glow-hover">
+          Projects
+          <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center group-hover:translate-x-1 transition-transform">
+            <i class="fa-solid fa-arrow-right text-sm"></i>
+          </div>
+        </a>
+      </div>
+
+      <!-- Enhanced profile image with gradient border and glow -->
+      <div class="relative">
+        <div class="relative w-full max-w-md mx-auto">
+          <div class="gradient-border animate-gradient">
+            <img 
+              src={siteConfig.avatar || "/placeholder.svg"}
+              alt={`${siteConfig.name}'s profile`}
+              class="w-full h-auto rounded-2xl shadow-2xl animate-float"
+            />
+          </div>
+          <div class="absolute -bottom-6 -right-6 w-24 h-24 glass rounded-full flex items-center justify-center glow">
+            <i class="fa-solid fa-code text-3xl gradient-text"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

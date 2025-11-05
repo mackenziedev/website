@@ -1,0 +1,84 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map(project => ({
+    params: { slug: project.slug },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await project.render();
+---
+
+<BaseLayout title={project.data.title} description={project.data.description}>
+  <Navigation />
+  
+  <main class="pt-32 pb-20">
+    <article class="max-w-5xl mx-auto px-6">
+      <header class="mb-12">
+        <a href="/#projects" class="inline-flex items-center gap-2 text-secondary hover:text-primary transition-colors mb-8">
+          <i class="nc-icon-outline arrows-1_minimal-left"></i>
+          Back to projects
+        </a>
+        
+        <h1 class="text-5xl lg:text-6xl font-display mb-4 leading-tight">
+          {project.data.title}
+        </h1>
+        
+        <p class="text-xl text-secondary mb-6">
+          {project.data.description}
+        </p>
+
+        <div class="flex flex-wrap gap-2 mb-6">
+          {project.data.tags.map(tag => (
+            <span class="px-3 py-1 bg-surface rounded-full text-sm text-secondary">
+              {tag}
+            </span>
+          ))}
+        </div>
+
+        <div class="flex gap-4">
+          {project.data.github && (
+            <a 
+              href={project.data.github} 
+              target="_blank" 
+              rel="noopener"
+              class="inline-flex items-center gap-2 px-6 py-3 bg-surface hover:bg-surface-light transition-colors rounded-full"
+            >
+              <i class="nc-icon-outline logo_github"></i>
+              View on GitHub
+            </a>
+          )}
+          {project.data.demo && (
+            <a 
+              href={project.data.demo} 
+              target="_blank" 
+              rel="noopener"
+              class="inline-flex items-center gap-2 px-6 py-3 bg-primary text-background hover:opacity-90 transition-opacity rounded-full"
+            >
+              <i class="nc-icon-outline ui-1_link-72"></i>
+              Live Demo
+            </a>
+          )}
+        </div>
+      </header>
+
+      {project.data.image && (
+        <img 
+          src={project.data.image || "/placeholder.svg"} 
+          alt={project.data.title}
+          class="w-full rounded-2xl mb-12"
+        />
+      )}
+
+      <div class="prose prose-lg max-w-none">
+        <Content />
+      </div>
+    </article>
+  </main>
+</BaseLayout>
