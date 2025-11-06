@@ -1,78 +1,275 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import Navigation from '../../components/Navigation.astro';
-import { getCollection } from 'astro:content';
+import { siteConfig } from '../config.js';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
 
-export async function getStaticPaths() {
-  const articles = await getCollection('blog');
-  return articles.map(article => ({
-    params: { slug: article.slug },
-    props: { article },
-  }));
-}
-
-const { article } = Astro.props;
-const { Content } = await article.render();
+const { title, description = siteConfig.bio } = Astro.props;
 ---
 
-<BaseLayout title={article.data.title} description={article.data.description}>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{title} | {siteConfig.name}</title>
+  <meta name="description" content={description}>
+  <link rel="icon" type="image/svg+xml" href={siteConfig.favicon}>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Replaced Nucleo with Font Awesome 6.7 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="bg-background text-primary font-body antialiased">
+  <!-- Added Navigation component globally -->
   <Navigation />
-  
-  <main class="pt-32 pb-20">
-    <article class="max-w-4xl mx-auto px-6">
-      <header class="mb-12">
-        <a href="/blog" class="inline-flex items-center gap-2 text-secondary hover:text-primary transition-colors mb-8 group">
-          <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-          Back to articles
-        </a>
-        
-        <h1 class="text-5xl lg:text-6xl font-display mb-6 leading-tight gradient-text">
-          {article.data.title}
-        </h1>
-        
-        <div class="flex flex-wrap items-center gap-4 text-secondary mb-6">
-          <time class="flex items-center gap-2">
-            <i class="fas fa-calendar-alt text-primary"></i>
-            {article.data.publishDate.toLocaleDateString('en-US', { 
-              year: 'numeric', 
-              month: 'long', 
-              day: 'numeric' 
-            })}
-          </time>
-          <span>•</span>
-          <div class="flex gap-2 flex-wrap">
-            {article.data.tags.map(tag => (
-              <span class="px-3 py-1 bg-surface rounded-full text-xs border border-primary/20 hover:border-primary/40 transition-colors">
-                {tag}
-              </span>
-            ))}
-          </div>
-        </div>
+  <slot />
+  <!-- Added Footer globally to all pages -->
+  <Footer />
+</body>
+</html>
 
-        <div class="glass p-4 rounded-xl">
-          <p class="text-sm text-secondary">
-            <i class="fas fa-clock text-primary mr-2"></i>
-            Estimated reading time: 5 min
-          </p>
-        </div>
-      </header>
+<style is:global>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-      <div class="prose prose-lg max-w-none">
-        <Content />
-      </div>
+  html {
+    scroll-behavior: smooth;
+  }
 
-      <footer class="mt-16 pt-8 border-t border-white/10">
-        <div class="flex justify-between items-center">
-          <a href="/blog" class="inline-flex items-center gap-2 text-secondary hover:text-primary transition-colors group">
-            <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
-            All articles
-          </a>
-          <a href="/#contact" class="inline-flex items-center gap-2 px-6 py-3 glass rounded-full hover:bg-white/10 transition-colors">
-            <i class="fas fa-envelope"></i>
-            Get in touch
-          </a>
-        </div>
-      </footer>
-    </article>
-  </main>
-</BaseLayout>
+  body {
+    overflow-x: hidden;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #1E1E1E;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #3D3D3D;
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+
+  .prose {
+    color: #F5F5F5;
+    max-width: 100%;
+  }
+
+  .prose h1, .prose h2, .prose h3, .prose h4 {
+    font-family: 'Outfit', sans-serif;
+    color: #F5F5F5;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose h1 {
+    font-size: 2.5rem;
+    line-height: 1.2;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .prose h2 {
+    font-size: 2rem;
+    line-height: 1.3;
+    color: #F5F5F5;
+    margin-top: 2.5rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid rgba(99, 102, 241, 0.2);
+  }
+
+  .prose h3 {
+    font-size: 1.5rem;
+    line-height: 1.4;
+    color: #F5F5F5;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose h4 {
+    font-size: 1.25rem;
+    color: #A6A6A6;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose p {
+    margin-bottom: 1.5rem;
+    line-height: 1.8;
+    color: #D1D1D1;
+    font-size: 1.05rem;
+  }
+
+  .prose a {
+    color: #8b5cf6;
+    text-decoration: none;
+    border-bottom: 2px solid rgba(139, 92, 246, 0.3);
+    transition: all 0.2s ease;
+    font-weight: 500;
+  }
+
+  .prose a:hover {
+    color: #ec4899;
+    border-bottom-color: rgba(236, 72, 153, 0.5);
+  }
+
+  .prose code {
+    background: rgba(99, 102, 241, 0.1);
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+    font-size: 0.9em;
+    color: #ec4899;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    font-family: 'Courier New', monospace;
+  }
+
+  .prose pre {
+    background: #0f0f0f;
+    padding: 1.5rem;
+    border-radius: 12px;
+    overflow-x: auto;
+    margin: 2rem 0;
+    border: 1px solid rgba(99, 102, 241, 0.2);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .prose pre code {
+    background: transparent;
+    padding: 0;
+    border: none;
+    color: #F5F5F5;
+  }
+
+  .prose blockquote {
+    border-left: 4px solid #6366f1;
+    background: rgba(99, 102, 241, 0.05);
+    padding: 1.5rem;
+    padding-left: 2rem;
+    margin: 2rem 0;
+    font-style: italic;
+    color: #D1D1D1;
+    border-radius: 0 8px 8px 0;
+  }
+
+  .prose blockquote p {
+    margin-bottom: 0;
+  }
+
+  .prose img {
+    border-radius: 12px;
+    margin: 2.5rem 0;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .prose hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.5), transparent);
+    margin: 3rem 0;
+  }
+
+  .prose table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 2rem 0;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .prose thead {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.15));
+  }
+
+  .prose th {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    font-weight: 600;
+    color: #F5F5F5;
+    border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .prose td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: #A6A6A6;
+    line-height: 1.6;
+  }
+
+  .prose tbody tr {
+    transition: background-color 0.2s ease;
+  }
+
+  .prose tbody tr:hover {
+    background: rgba(99, 102, 241, 0.05);
+  }
+
+  .prose tbody tr:last-child td {
+    border-bottom: none;
+  }
+
+  .prose strong {
+    color: #F5F5F5;
+    font-weight: 600;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .prose ul, .prose ol {
+    margin-left: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #A6A6A6;
+    line-height: 1.8;
+  }
+
+  .prose li {
+    margin-bottom: 0.75rem;
+    padding-left: 0.5rem;
+  }
+
+  .prose ul li::marker {
+    color: #6366f1;
+  }
+
+  .prose ol li::marker {
+    color: #8b5cf6;
+    font-weight: 600;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+</style>
